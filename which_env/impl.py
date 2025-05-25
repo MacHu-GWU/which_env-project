@@ -185,7 +185,7 @@ class BaseEnvNameEnum(BetterStrEnum):
         return cls.devops
 
     @classmethod
-    def get_dev(cls) -> T.Self:
+    def get_dev(cls):
         """
         Get the Development environment reference from the enumeration.
         """
