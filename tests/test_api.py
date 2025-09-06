@@ -10,6 +10,7 @@ def test():
     _ = api.EnvNameValidationError
     _ = api.validate_env_name
     _ = api.CommonEnvNameEnum
+    _ = api.CommonEnvEmojiEnum
     _ = api.BaseEnvNameEnum
     _ = api.env_emoji_mapper
     _ = api.detect_current_env

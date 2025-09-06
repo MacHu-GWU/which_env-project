@@ -228,7 +228,7 @@ class BaseEnvNameEnum(BetterStrEnum):
     @classmethod
     def get_workload_env_list(cls) -> list:
         """
-        List of environments considered as workload environments.
+        Get the list of environments considered as workload environments.
 
         Workload environments are those used for deploying and running
         applications, excluding build or CI/CD environments like 'devops'.
