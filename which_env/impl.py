@@ -30,9 +30,10 @@ environment based on various runtime contexts and environment variables.
 import typing as T
 import os
 import string
+import dataclasses
 
-from which_runtime.api import Runtime, runtime as runtime_
 from enum_mate.api import BetterStrEnum
+from which_runtime.api import Runtime, runtime as runtime_
 
 
 USER_ENV_NAME = "USER_ENV_NAME"
@@ -92,15 +93,30 @@ class CommonEnvNameEnum(BetterStrEnum):
     prd = "prd"  # Production environment for live user traffic
 
 
+class CommonEnvEmojiEnum(BetterStrEnum):
+    """
+    Emoji representations for common environment names.
+    """
+
+    devops = "🛠"
+    sbx = "🧰"
+    dev = "💻"
+    tst = "🧪"
+    stg = "🎸"
+    qa = "👮"
+    preprd = "🚦"
+    prd = "🏭"
+
+
 env_emoji_mapper = {
-    CommonEnvNameEnum.devops.value: "🛠",
-    CommonEnvNameEnum.sbx.value: "🧰",
-    CommonEnvNameEnum.dev.value: "💻",
-    CommonEnvNameEnum.tst.value: "🧪",
-    CommonEnvNameEnum.stg.value: "🎸",
-    CommonEnvNameEnum.qa.value: "👮",
-    CommonEnvNameEnum.preprd.value: "🚦",
-    CommonEnvNameEnum.prd.value: "🏭",
+    CommonEnvNameEnum.devops.value: CommonEnvEmojiEnum.devops.value,
+    CommonEnvNameEnum.sbx.value: CommonEnvEmojiEnum.sbx.value,
+    CommonEnvNameEnum.dev.value: CommonEnvEmojiEnum.dev.value,
+    CommonEnvNameEnum.tst.value: CommonEnvEmojiEnum.tst.value,
+    CommonEnvNameEnum.stg.value: CommonEnvEmojiEnum.stg.value,
+    CommonEnvNameEnum.qa.value: CommonEnvEmojiEnum.qa.value,
+    CommonEnvNameEnum.preprd.value: CommonEnvEmojiEnum.preprd.value,
+    CommonEnvNameEnum.prd.value: CommonEnvEmojiEnum.prd.value,
 }
 
 
@@ -209,6 +225,16 @@ class BaseEnvNameEnum(BetterStrEnum):
         """
         return env_emoji_mapper[self.value]
 
+    @classmethod
+    def get_workload_env_list(cls) -> list:
+        """
+        List of environments considered as workload environments.
+
+        Workload environments are those used for deploying and running
+        applications, excluding build or CI/CD environments like 'devops'.
+        """
+        return [env_name for env_name in cls if env_name != cls.get_devops()]
+
 
 def detect_current_env(
     env_name_enum_class: T.Union[BaseEnvNameEnum, T.Type[BaseEnvNameEnum]],
@@ -265,7 +291,7 @@ def detect_current_env(
     # Validate the implementation of the enum.
     env_name_enum_class.validate()
 
-    if runtime is None: # pragma: no cover
+    if runtime is None:  # pragma: no cover
         runtime = runtime_
 
     if runtime.is_local_runtime_group:

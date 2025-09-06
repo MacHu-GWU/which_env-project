@@ -2,7 +2,6 @@
 
 import os
 import pytest
-from unittest.mock import patch
 
 from which_runtime.api import Runtime
 from which_env.impl import (
@@ -99,6 +98,13 @@ class TestBaseEnvNameEnum:
         assert EnvNameEnum.get_devops() == EnvNameEnum.devops.value
         assert EnvNameEnum.get_dev() == EnvNameEnum.dev.value
         assert EnvNameEnum.get_prd() == EnvNameEnum.prd.value
+
+    def test_get_workload_env_list(self):
+        assert EnvNameEnum.get_workload_env_list() == [
+            EnvNameEnum.dev.value,
+            EnvNameEnum.tst.value,
+            EnvNameEnum.prd.value,
+        ]
 
     def test_emoji(self):
         for env_name in EnvNameEnum:
