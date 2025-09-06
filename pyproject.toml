@@ -24,18 +24,6 @@ maintainers = [
 ]
 keywords = []
 readme = "README.rst"
-# Files to include in the package distribution
-include = [
-    "*.txt",
-    "*.rst",
-]
-# Files to exclude from the package
-exclude = [
-    "*.pyc",
-    "*.pyo",
-    "which_env/docs/*",
-    "which_env/tests/*",
-]
 requires-python = ">=3.9,<4.0"
 # Full list of classifiers: https://pypi.org/classifiers/
 classifier = [
@@ -123,28 +111,39 @@ Download = "https://pypi.org/pypi/which-env#files"
 [tool.poetry.requires-plugins]
 poetry-plugin-export = ">=1.9.0,<2.0.0"
 
+[tool.poetry]
+# Files to include in the package distribution
+packages = [
+    { include = "which_bsm", from = ".", to = "." }
+]
+# Files to exclude from the package
+exclude = [
+    "which_bsm/tests/*",
+    "which_bsm/docs/*",
+    "**/*.pyc",
+    "**/*.pyo",
+]
+
 # python workflow tool config
 [tool.pywf]
 # The specific python version you use for local development
 dev_python = "3.11.8"
-# github.com account name (for unit test)
+# --- github.com
 github_account = "MacHu-GWU"
-# Create GitHub token in https://github.com/settings/tokens and put the token at
-# ``${HOME}/.github/${github_account}/pac/${github_token_name}.txt``
-github_token_name = "sanhe-dev"
-# codecov.io (for code coverage test report) account name
-# If you use GitHub account to login codecov.io, then it is the same as your github account
+# Create GitHub token in https://github.com/settings/tokens and put the token in
+# ``${HOME}/home_secret.json``
+github_token_field = "providers.github.accounts.sh.users.sh.secrets.dev.value"
+# --- codecov.io (for code coverage test report)
 codecov_account = "MacHu-GWU"
-# Create Codecov token in https://app.codecov.io/account/gh/${codecov_account}/access and put the token at
-# ``${HOME}/.codecov/github/${codecov_account}/${codecov_token_name}.txt``
-codecov_token_name = "sanhe-dev"
-# readthedocs.org user name (for documentation hosting)
-readthedocs_username = "machugwu"
+# Create Codecov token in https://app.codecov.io/account/gh/${codecov_account}/access
+# and put the token in ``${HOME}/home_secret.json``
+codecov_token_field = "providers.codecov_io.accounts.sh.users.sh.secrets.dev.value"
+# --- readthedocs.org (for documentation hosting)
+# Create Readthedocs token in https://app.readthedocs.org/accounts/tokens/
+# and put the token at ``${HOME}/home_secret.json``
+readthedocs_token_field = "providers.readthedocs.accounts.sh.users.sh.secrets.dev.value"
 # Readthedocs project name, usually it is the same as your project name
 readthedocs_project_name = "which_env"
-# Create Readthedocs token in https://app.readthedocs.org/accounts/tokens/ and put the token at
-# ``${HOME}/.readthedocs/${readthedocs_username}/${readthedocs_token_name}.txt``
-readthedocs_token_name = "sanhe-dev"
 
 # Read: https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#declaring-the-build-backend
 [build-system]
